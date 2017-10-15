@@ -1,21 +1,20 @@
 DEBIAN_FRONTEND=noninteractive
 
-echo 'Installing general utilities...'
-apt-get update -y
-apt-get install -y curl unzip wget
-apt-get install -y build-essential zlib1g-dev
-apt-get install -y python-software-properties
-systemctl stop cups
-systemctl stop cups-browsed
-systemctl disable cups
-systemctl disable cups-browsed
-
 cat > ~/.wgetrc << EOL
 dot_bytes = 5m
 EOL
 
 # java
 if ! [ -x "$(command -v java)" ]; then
+    apt-get update -y
+    apt-get install -y curl unzip wget
+    apt-get install -y build-essential zlib1g-dev
+    apt-get install -y python-software-properties
+    systemctl stop cups
+    systemctl stop cups-browsed
+    systemctl disable cups
+    systemctl disable cups-browsed
+
     wget -O /tmp/jdk.tag.gz $1 --header="Cookie: oraclelicense=accept-securebackup-cookie"
     mkdir -p /opt/jdk
     tar -zxf /tmp/jdk.tag.gz -C /opt/jdk --strip-components=1

@@ -1,0 +1,10 @@
+*.annot
+*.cmi
+*.cmo
+*.mli
+*.byte
+
+_build/
+.settings/
+.paths
+.project
