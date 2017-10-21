@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 eclipse_location = "http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/oxygen/1a/eclipse-jee-oxygen-1a-linux-gtk-x86_64.tar.gz"
-java_location = "http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.tar.gz"
+java_location = "http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz"
 code_location = "https://go.microsoft.com/fwlink/?LinkID=760868";
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
