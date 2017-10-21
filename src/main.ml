@@ -7,9 +7,6 @@ type valueType = PrimitiveType of primitiveType
 						   | ClassName of string 
 							 | BottomType
 
-type field = (valueType * string)
-type fieldList = (field) list
-
 type value = NullValue 
 					 | IntegerValue of int 
 					 | FloatValue of float 
@@ -59,4 +56,14 @@ and expression = Value of value
 							 | ComparisonOperation of (expression * comparisonOperator * expression)
 							 | CastExpression of (string * string)
 							 | InstanceOfExpression of (string * string) 
+
+type classField = (valueType * string)
+
+type methodParameter = (valueType * string)
+
+type classMethod = (valueType * string * (methodParameter) list * expressionBlock) 
+
+type classDefinition = (string * string * (classField) list * (classMethod) list)
+
+type program = (string * classDefinition) list
 							  
