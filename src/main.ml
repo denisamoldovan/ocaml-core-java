@@ -1,9 +1,14 @@
+(* AST definition *)
+
 type primitiveType = IntegerType 
 								 	 | FloatType 
 									 | BooleanType 
 									 | VoidType
 
-type valueType = PrimitiveType of primitiveType 
+type valueType = IntegerType 
+						 	 | FloatType 
+							 | BooleanType 
+							 | VoidType
 						   | ClassName of string 
 							 | BottomType
 
@@ -66,4 +71,42 @@ type classMethod = (valueType * string * (methodParameter) list * expressionBloc
 type classDefinition = (string * string * (classField) list * (classMethod) list)
 
 type program = (string * classDefinition) list
+
+(* Type checker *)
+
+exception TypeError of string
+
+let isAssignable source target _ = match target with
+| BooleanType -> source == BooleanType
+| IntegerType -> source == IntegerType
+| FloatType -> source == IntegerType || source == FloatType
+| _ -> false
+
+let checkValue v _ = match v with 
+	| NullValue -> BottomType
+	| IntegerValue(_) -> IntegerType
+	| FloatValue(_) -> FloatType
+	| BooleanValue(_) -> BooleanType
+	| VoidValue -> VoidType
+	| _ -> raise (TypeError("Unknown value type"))
+
+let rec checkOperation e1 e2 typ typeEnv = 
+	if ((isAssignable (checkExpression e1 typeEnv) typ typeEnv) && (isAssignable (checkExpression e2 typeEnv) typ typeEnv))
+	then typ
+	else raise (TypeError("Incompatible types"))
+
+and checkExpression e typeEnv = match e with
+  | Value(v) -> checkValue v typeEnv
+	| IntegerOperation(e1, _, e2) -> checkOperation e1 e2 IntegerType typeEnv
+	| FloatOperation(e1, _, e2) -> checkOperation e1 e2 FloatType typeEnv
+	| LogicalBinaryOperation(e1, _, e2) -> checkOperation e1 e2 BooleanType typeEnv
+	| LogicalUnaryOperation(_, e) -> if (isAssignable (checkExpression e typeEnv) BooleanType typeEnv) then BooleanType else raise (TypeError("Incompatible types"))
+  | _ -> raise (TypeError("Unknown expression type"))
+
+
+
+
+
+
+
 							  
