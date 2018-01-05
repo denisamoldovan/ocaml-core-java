@@ -8,3 +8,7 @@ _build/
 .settings/
 .paths
 .project
+
+*.log
+*.cache
+*.o
