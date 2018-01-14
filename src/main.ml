@@ -469,15 +469,16 @@ and checkExpression (e : expression) (typeEnv : typeEnvironment) : valueType =
  * ensuring that the actual method body return type is compatible with the declared return type.
  *)
 let checkMethod (meth : classMethod) (env : typeEnvironment) : unit = 
-	let (retTyp, _, params, bl) = meth in
+	let (formalReturnType, _, params, block) = meth in
 	let (stack, classes) = env in
 	let extendedEnv = ((map (fun (varTyp, varNam) -> (varNam, varTyp)) params) @ stack, classes) in
   	ignore(
   		fold_left (fun a e -> if a <> "" && a = e then raise (Failure ("Duplicate parameter name " ^ e)) else e) "" 
   			(sort compare (map (fun (_, varNam) -> varNam) params))
   	);
+		let actualReturnType = checkBlock block extendedEnv in
 		(* Included void type check to allow "discarding" the result of a method (same as the OCaml ignore function) *)
-		if retTyp <> VoidType && not (isAssignable (checkBlock bl extendedEnv) retTyp extendedEnv) then
+		if formalReturnType <> VoidType && not (isAssignable actualReturnType formalReturnType extendedEnv) then
 			raise (Failure("Incompatible types"))
 (**
  * Type-checks a whole class definition (by checking for duplicate fields and type-checking each method). This
